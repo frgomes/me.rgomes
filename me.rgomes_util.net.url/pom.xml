@@ -29,18 +29,20 @@
         <props.compile.fork>false</props.compile.fork> <!-- Be cautious: may fork a different JVM -->
 
         <props.maven.maven-surefire-plugin.version>2.7.1</props.maven.maven-surefire-plugin.version>
-        <!--
         <props.maven.maven-eclipse-plugin.version>2.8</props.maven.maven-eclipse-plugin.version>
         <props.maven.maven-compiler-plugin.version>2.3.2</props.maven.maven-compiler-plugin.version>
         <props.maven.maven-assembly-plugin.version>2.2-beta-2</props.maven.maven-assembly-plugin.version>
         <props.maven.maven-antrun-plugin.version>1.6</props.maven.maven-antrun-plugin.version>
         <props.maven.maven-clean-plugin.version>2.4.1</props.maven.maven-clean-plugin.version>
+        <props.maven.maven-source-plugin.version>2.1.2</props.maven.maven-source-plugin.version>
+        <props.maven.maven-javadoc-plugin.version>2.8</props.maven.maven-javadoc-plugin.version>
         <props.maven.maven-deploy-plugin.version>2.5</props.maven.maven-deploy-plugin.version>
         <props.maven.maven-install-plugin.version>2.3.1</props.maven.maven-install-plugin.version>
         <props.maven.maven-resources-plugin.version>2.4.3</props.maven.maven-resources-plugin.version>
         <props.maven.maven-site-plugin.version>3.0-beta-3</props.maven.maven-site-plugin.version>
         <props.maven.maven-war-plugin.version>2.1.1</props.maven.maven-war-plugin.version>
-        -->
+
+        <props.maven.wagon.wagon-ssh.version>1.0-beta-7</props.maven.wagon.wagon-ssh.version>
     </properties>
 
     <organization>
@@ -60,23 +62,23 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}</connection>
-        <developerConnection>scm:svn:https://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}</developerConnection>
-        <url>http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}</url>
+        <connection>scm:svn:http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</connection>
+        <developerConnection>scm:svn:https://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</developerConnection>
+        <url>http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</url>
     </scm>
 
     <distributionManagement>
         <repository>
             <id>sourceforge-releases</id>
             <name>Corporate Repository</name>
-            <url>scp://fgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
             <uniqueVersion>true</uniqueVersion>
             <layout>default</layout>
         </repository>
         <snapshotRepository>
             <id>sourceforge-snapshots</id>
             <name>Corporate Repository</name>
-            <url>scp://fgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
             <uniqueVersion>true</uniqueVersion>
             <layout>default</layout>
         </snapshotRepository>
@@ -84,7 +86,7 @@
         <site>
             <id>rgomes.name</id>
             <name>Richard Gomes</name>
-            <url>scp://fgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/site/</url>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/site/</url>
         </site>
     </distributionManagement>
 
@@ -128,27 +130,36 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ssh</artifactId>
+                        <version>${props.maven.wagon.wagon-ssh.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
         </plugins>
 
         <pluginManagement>
             <plugins>
-                <!-- force a specific version of Surefire -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${props.maven.maven-surefire-plugin.version}</version>
                 </plugin>
-
-                <!--
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <version>${props.maven.maven-eclipse-plugin.version}</version>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${props.maven.maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>${props.maven.maven-eclipse-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -159,6 +170,16 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${props.maven.maven-clean-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${props.maven.maven-source-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${props.maven.maven-javadoc-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -185,7 +206,6 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${props.maven.maven-war-plugin.version}</version>
                 </plugin>
-                -->
             </plugins>
         </pluginManagement>
 
