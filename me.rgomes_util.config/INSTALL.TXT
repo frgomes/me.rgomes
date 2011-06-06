@@ -1,0 +1,11 @@
+Requirements
+------------
+
+    * JDK1.6 or newer
+    * Maven 3.0.3 or newer
+
+
+Installation
+------------
+
+    mvn clean package install
