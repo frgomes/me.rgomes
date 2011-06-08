@@ -28,7 +28,7 @@ import me.rgomes.util.net.url.ResourceLookup;
  * values override values previously found in the previous step. This feature permits that
  * defaults values are defined by an automated build process.
  * <p>
- * If <i>config/instance.properties</i> file exists and <i>realm</i> and/or <i>mode</i> are
+ * If <i>config/global.properties</i> file exists and <i>realm</i> and/or <i>mode</i> are
  * found as entries in this file, these values override values previously found in previous
  * steps. This feature permits that these values can be forced by the user.
  * <p>
@@ -36,12 +36,30 @@ import me.rgomes.util.net.url.ResourceLookup;
  * these files, if they exist:
  * <pre>
  *     ./config/${realm}/${mode}/application.properties
+ * </pre>
+ * This file is intended to contain all properties an application needs. These properties can
+ * be organised hierarchically.
+  * <pre>
  *     ./config/${realm}/${mode}/password.properties
  * </pre>
- * <p>
- * Notice that values defined in password.properties may override values previously loaded
+ * Properties defined in password.properties may override values previously loaded
  * from application.properties. This feature allows sensitive information to be provided
  * by production support personnel, overriding configurations provided by developers.
+ * <p>
+ * <b>NOTES:<b>
+ * <ul>
+ * <li>
+ * File <i>config/global.properties</i> can contain as much properties as user wishes, in spite
+ * this is not a good practice.
+ * </li>
+ * <li>
+ * Do not confuse <i>realm<b> with <i>username</i>. You can specify a realm as an entry in the
+ * MANIFEST.MF file or force it in file <i>config/global.properties</i>. You you do not specify
+ * anything, your <i>realm<i> is obtained by <code>System.getProperty("user.name", "anonymous")</code>
+ * which tried to obtain your <i>username</i>. If all fails, your <i>realm</i> is assumed as
+ * <code>anonymous</code>.
+ * </li>
+ * </ul>
  *
  * @author Richard Gomes <rgomes1997@yahoo.co.uk>
  */
@@ -67,7 +85,7 @@ public class DefaultPreferences extends AbstractPreferences {
 		this.prefix = "";
 
         // Try to read default realm and mode from MANIFEST.MF
-        String mrealm = DefaultPreferencesFactory.REALM;
+        String mrealm = DefaultPreferencesFactory.USERNAME;
         String mmode  = "debug";
         try {
             Manifest mf = new Manifest();
@@ -81,8 +99,8 @@ public class DefaultPreferences extends AbstractPreferences {
 		try {
             InputStream is;
 
-            // Try to read realm and mode from config/instance.properties
-            is = getInputStream("config/instance.properties");
+            // Try to read realm and mode from config/global.properties
+            is = getInputStream("config/global.properties");
             if (is != null) props.load(is);
             String realm = props.getProperty("realm", mrealm);
             String mode  = props.getProperty("mode",  mmode);
