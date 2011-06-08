@@ -14,16 +14,34 @@ import me.rgomes.util.net.url.ResourceLookup;
 
 
 /**
- * This class employs ResourceLookup in order to load configurations from
- * properties files as specified below:
+ * This class employs ResourceLookup for loading configurations from properties files.
+ * <p>
+ * The first step consists in obtaining the default <i>realm</i> and default <i>mode</i>.
+ * The default <i>realm</i> is obtained from current logged in user or "anonymous" is
+ * assumed in case it cannot be obtained.
+ * <pre>
+ *     System.getProperty("user.name", "anonymous")
+ * </pre>
+ * The default <i>mode</i> is "debug".
+ * <p>
+ * If <i>realm</i> and/or <i>mode</i> are found as entries in the MANIFEST.MF, their
+ * values override values previously found in the previous step. This feature permits that
+ * defaults values are defined by an automated build process.
+ * <p>
+ * If <i>config/instance.properties</i> file exists and <i>realm</i> and/or <i>mode</i> are
+ * found as entries in this file, these values override values previously found in previous
+ * steps. This feature permits that these values can be forced by the user.
+ * <p>
+ * Once <i>realm</i> and <i>mode</i> are determined, additional properties are read from
+ * these files, if they exist:
  * <pre>
  *     ./config/${realm}/${mode}/application.properties
  *     ./config/${realm}/${mode}/password.properties
  * </pre>
  * <p>
- * where <i>realm</i> and <i>mode</i> are obtained from MANIFEST.MF file.
- * In case the manifest file is not found, <i>realm</i> assumes "default" and
- * <i>mode</i> assumes "debug".
+ * Notice that values defined in password.properties may override values previously loaded
+ * from application.properties. This feature allows sensitive information to be provided
+ * by production support personnel, overriding configurations provided by developers.
  *
  * @author Richard Gomes <rgomes1997@yahoo.co.uk>
  */
@@ -48,13 +66,13 @@ public class DefaultPreferences extends AbstractPreferences {
 		super(null, "");
 		this.prefix = "";
 
-        // Try to read realm and mode from MANIFEST.MF
-        String realm = "default";
-        String mode  = "debug";
+        // Try to read default realm and mode from MANIFEST.MF
+        String mrealm = DefaultPreferencesFactory.REALM;
+        String mmode  = "debug";
         try {
             Manifest mf = new Manifest();
-            realm = mf.getAttribute("realm", realm);
-            mode  = mf.getAttribute("mode", mode);
+            mrealm = mf.getAttribute("realm", mrealm);
+            mmode  = mf.getAttribute("mode",  mmode);
         } catch (Exception e) {
             // discard
         }
@@ -62,6 +80,13 @@ public class DefaultPreferences extends AbstractPreferences {
         this.props = new Properties();
 		try {
             InputStream is;
+
+            // Try to read realm and mode from config/instance.properties
+            is = getInputStream("config/instance.properties");
+            if (is != null) props.load(is);
+            String realm = props.getProperty("realm", mrealm);
+            String mode  = props.getProperty("mode",  mmode);
+
             // load application.properties
             is = getInputStream(String.format("config/%s/%s/application.properties", realm, mode));
             if (is != null) props.load(is);

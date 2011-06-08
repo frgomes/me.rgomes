@@ -10,6 +10,9 @@ import java.util.prefs.PreferencesFactory;
  */
 public class DefaultPreferencesFactory implements PreferencesFactory {
 
+    // This variable is intentionally package-protected
+    static final String REALM = System.getProperty("user.name", "anonymous");
+
     @Override
 	public Preferences systemRoot() {
 		return new DefaultPreferences();
@@ -17,9 +20,7 @@ public class DefaultPreferencesFactory implements PreferencesFactory {
 
     @Override
 	public Preferences userRoot() {
-		return new DefaultPreferences(
-                new DefaultPreferences(),
-                System.getProperty("user.name", "anonymous"));
+		return new DefaultPreferences(new DefaultPreferences(), REALM);
 	}
 
 }
