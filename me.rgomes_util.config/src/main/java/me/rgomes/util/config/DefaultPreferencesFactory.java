@@ -10,11 +10,16 @@ import java.util.prefs.PreferencesFactory;
  */
 public class DefaultPreferencesFactory implements PreferencesFactory {
 
-	public Preferences userRoot() {
-		return new DefaultPreferences();
-	}
-
+    @Override
 	public Preferences systemRoot() {
 		return new DefaultPreferences();
 	}
+
+    @Override
+	public Preferences userRoot() {
+		return new DefaultPreferences(
+                new DefaultPreferences(),
+                System.getProperty("user.name", "anonymous"));
+	}
+
 }
