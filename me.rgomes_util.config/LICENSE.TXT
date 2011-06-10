@@ -1,3 +1,0 @@
-This software is LGPLv3 licensed.
-For more detail, please visit
-    http://www.opensource.org/licenses/lgpl-3.0.html
