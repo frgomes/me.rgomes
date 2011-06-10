@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.rgomes</groupId>
+    <artifactId>protocols</artifactId>
+    <version>0.1.0</version>
+
+    <packaging>jar</packaging>
+
+    <name>protocols</name>
+    <url>http://sourceforge.net/projects/rgomes/files/maven/sites/${project.artifactId}</url>
+
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <props.compile.jdk.source>1.6</props.compile.jdk.source>
+        <props.compile.jdk.target>1.6</props.compile.jdk.target>
+        <props.compile.meminitial>128m</props.compile.meminitial>
+        <props.compile.maxmem>512m</props.compile.maxmem>
+        <props.compile.fork>false</props.compile.fork> <!-- Be cautious: may fork a different JVM -->
+
+        <junit.version>4.8.2</junit.version>
+        <slf4j.version>1.5.11</slf4j.version>
+
+        <props.maven.maven-surefire-plugin.version>2.7.1</props.maven.maven-surefire-plugin.version>
+        <props.maven.maven-eclipse-plugin.version>2.8</props.maven.maven-eclipse-plugin.version>
+        <props.maven.maven-compiler-plugin.version>2.3.2</props.maven.maven-compiler-plugin.version>
+        <props.maven.maven-assembly-plugin.version>2.2-beta-2</props.maven.maven-assembly-plugin.version>
+        <props.maven.maven-antrun-plugin.version>1.6</props.maven.maven-antrun-plugin.version>
+        <props.maven.maven-clean-plugin.version>2.4.1</props.maven.maven-clean-plugin.version>
+        <props.maven.maven-source-plugin.version>2.1.2</props.maven.maven-source-plugin.version>
+        <props.maven.maven-javadoc-plugin.version>2.8</props.maven.maven-javadoc-plugin.version>
+        <props.maven.maven-deploy-plugin.version>2.5</props.maven.maven-deploy-plugin.version>
+        <props.maven.maven-install-plugin.version>2.3.1</props.maven.maven-install-plugin.version>
+        <props.maven.maven-resources-plugin.version>2.4.3</props.maven.maven-resources-plugin.version>
+        <props.maven.maven-site-plugin.version>3.0-beta-3</props.maven.maven-site-plugin.version>
+        <props.maven.maven-war-plugin.version>2.1.1</props.maven.maven-war-plugin.version>
+
+        <props.maven.wagon.wagon-ssh.version>1.0-beta-7</props.maven.wagon.wagon-ssh.version>
+    </properties>
+
+    <organization>
+        <name>Richard Gomes</name>
+        <url>http://rgomes.info/</url>
+    </organization>
+
+    <inceptionYear>2011</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>LGPLv3 License</name>
+            <url>http://www.opensource.org/licenses/lgpl-3.0.html</url>
+            <distribution>manual</distribution>
+            <comments>The GNU Lesser General Public License, version 3.0 (LGPL-3.0)</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:svn:http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</connection>
+        <developerConnection>scm:svn:https://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</developerConnection>
+        <url>http://rgomes.svn.sourceforge.net/svnroot/rgomes/trunk/${project.artifactId}_${project.artifactId}</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>sourceforge-releases</id>
+            <name>Corporate Repository</name>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
+            <uniqueVersion>true</uniqueVersion>
+            <layout>default</layout>
+        </repository>
+        <snapshotRepository>
+            <id>sourceforge-snapshots</id>
+            <name>Corporate Repository</name>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/repository/</url>
+            <uniqueVersion>true</uniqueVersion>
+            <layout>default</layout>
+        </snapshotRepository>
+
+        <site>
+            <id>rgomes.name</id>
+            <name>Richard Gomes</name>
+            <url>scp://fgomes,rgomes@frs.sourceforge.net/home/frs/project/r/rg/rgomes/maven/site/</url>
+        </site>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${props.compile.jdk.source}</source>
+                    <target>${props.compile.jdk.target}</target>
+                    <memintial>${props.compile.meminitial}</memintial>
+                    <maxmem>${props.compile.maxmem}</maxmem>
+                    <fork>${props.compile.fork}</fork>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ssh</artifactId>
+                        <version>${props.maven.wagon.wagon-ssh.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${props.maven.maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${props.maven.maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>${props.maven.maven-eclipse-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${props.maven.maven-antrun-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${props.maven.maven-clean-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${props.maven.maven-source-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${props.maven.maven-javadoc-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${props.maven.maven-deploy-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${props.maven.maven-install-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${props.maven.maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${props.maven.maven-site-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${props.maven.maven-war-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+</project>
