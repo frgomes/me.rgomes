@@ -1,8 +1,12 @@
 package me.rgomes.prefs;
 
+import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
@@ -150,8 +154,10 @@ public class Preferences extends AbstractPreferences {
     // Acessor to internal properties
     //
 
-    public Map asUnmodifiableMap() {
-        return Collections.unmodifiableMap(props);
+    public Map<String,String> asUnmodifiableMap() {
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        Map<String, String> map = new HashMap(props);
+        return Collections.<String,String>unmodifiableMap(map);
     }
 
 }
