@@ -14,7 +14,7 @@ public class Manifest extends java.util.jar.Manifest {
 
     public Manifest() throws IOException {
         // Employ conf: protocol
-        super(new URL(null, "META-INF/MANIFEST.MF", new me.rgomes.protocols.conf.Handler()).openStream());
+        super(new URL(null, "conf:META-INF/MANIFEST.MF", new me.rgomes.protocols.conf.Handler()).openStream());
     }
 
     public String getAttribute(final String name) {

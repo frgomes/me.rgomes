@@ -1,8 +1,7 @@
 package me.rgomes.prefs;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLStreamHandler;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
@@ -13,10 +12,11 @@ import java.util.prefs.BackingStoreException;
  * Returns Preferences retrieved by the <i>conf:</i> protocol as below:
  * <pre>
  *     conf:application.properties
+ *     conf:persistence.properties
  *     conf:password.properties
  * <p>
- * In a nutshell, the <i>conf:</i> allows transparent access to
- * path <i>conf/${realm}/${mode}</i>, does not matter if this path can be found in
+ * In a nutshell, the <i>conf:</i> protocol allows transparent access to
+ * path <i>conf/${realm}/${mode}</i>, does not matter if this path can be found
  * as a subfolder of the application folder, as a subfolder packaged inside a .jar file
  * or as a subfolder mapped under the Eclipse build path.
  * <p>
@@ -77,23 +77,10 @@ public class Preferences extends AbstractPreferences {
 	public Preferences() {
 		super(null, "");
 		this.prefix = "";
-        this.props = new Properties();
-
-        // Employ conf: protocol
-        final URLStreamHandler handler = new me.rgomes.protocols.conf.Handler();
-
         try {
-            InputStream is;
-
-            // load application.properties
-            is = new URL(null, "conf:application.properties", handler).openStream();
-            if (is != null) props.load(is);
-
-            // load password.properties
-            is = new URL(null, "conf:password.properties", handler).openStream();
-            if (is != null) props.load(is);
+            this.props = new Configuration().properties();
 		} catch (Exception e) {
-			throw new RuntimeException("Failed to load etc/uration", e);
+			throw new RuntimeException("Failed to load confiuration", e);
 		}
 	}
 
@@ -157,5 +144,14 @@ public class Preferences extends AbstractPreferences {
 		// We can simply delegate.
 		flushSpi();
 	}
+
+
+    //
+    // Acessor to internal properties
+    //
+
+    public Map asUnmodifiableMap() {
+        return Collections.unmodifiableMap(props);
+    }
 
 }

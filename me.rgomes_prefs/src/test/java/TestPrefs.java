@@ -22,7 +22,8 @@ public class TestPrefs {
      * in the Properties file as <i>name</i>.
      */
     public void testSystemRoot() {
-        Preferences prefs = new Configuration().systemRoot();
+        System.setProperty("java.util.prefs.PreferencesFactory", me.rgomes.prefs.PreferencesFactory.class.getName());
+        Preferences prefs = Preferences.systemRoot();
         String prop = prefs.get("level", "test failed");
         Assert.assertTrue("ERROR".equals(prop));
         System.out.println("level="+prop);
@@ -38,7 +39,8 @@ public class TestPrefs {
      * to de defined in the Properties file as <i>com.example.name</i>.
      */
     public void testSystemNodeForPackage() {
-        Preferences prefs = new Configuration().systemNodeForPackage(Configuration.class);
+        System.setProperty("java.util.prefs.PreferencesFactory", me.rgomes.prefs.PreferencesFactory.class.getName());
+        Preferences prefs = Preferences.systemNodeForPackage(Configuration.class);
         String prop = prefs.get("level", "test failed");
         Assert.assertTrue("WARN".equals(prop));
         System.out.println(Configuration.class.getName()+".level="+prop);
@@ -70,7 +72,8 @@ public class TestPrefs {
      * currently logged in user is "jsmith".
      */
     public void testUserRoot() {
-        Preferences prefs = new Configuration().userRoot();
+        System.setProperty("java.util.prefs.PreferencesFactory", me.rgomes.prefs.PreferencesFactory.class.getName());
+        Preferences prefs = Preferences.userRoot();
         String prop = prefs.get("level", "test failed");
         // The properties file assume your username is "jsmith"
         // If it is not the case... well... this is why this test is marked as @Ignore
@@ -90,7 +93,8 @@ public class TestPrefs {
      * that the currently logged in user is "jsmith".
      */
     public void testUserNodeForPackage() {
-        Preferences prefs = new Configuration().userNodeForPackage(Configuration.class);
+        System.setProperty("java.util.prefs.PreferencesFactory", me.rgomes.prefs.PreferencesFactory.class.getName());
+        Preferences prefs = Preferences.userNodeForPackage(Configuration.class);
         String prop = prefs.get("level", "test failed");
         // The properties file assume your username is "jsmith"
         // If it is not the case... well... this is why this test is marked as @Ignore
