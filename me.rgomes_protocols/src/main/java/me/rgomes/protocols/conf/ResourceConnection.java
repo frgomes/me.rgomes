@@ -1,5 +1,6 @@
 package me.rgomes.protocols.conf;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -118,8 +119,13 @@ public class ResourceConnection extends URLConnection {
         }
 
         public InputStream getInputStream(String name) throws IOException {
-            final String path = String.format("conf/%s/%s/%s", realm, mode, name);
-            return new Resource(path).openInputStream();
+            if (name!=null && name.length()>0) {
+                final String path = String.format("conf/%s/%s/%s", realm, mode, name);
+                return new Resource(path).openInputStream();
+            } else {
+                byte[] bytes = String.format("username=%s\nrealm=%s\nmode=%s\n", username, realm, mode).getBytes();
+                return new ByteArrayInputStream(bytes);
+            }
         }
 
     }
