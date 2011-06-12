@@ -1,12 +1,9 @@
 package me.rgomes.prefs;
 
-import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 import java.util.prefs.AbstractPreferences;
 import java.util.prefs.BackingStoreException;
 
@@ -82,7 +79,7 @@ public class Preferences extends AbstractPreferences {
 		super(null, "");
 		this.prefix = "";
         try {
-            this.props = new Configuration().properties();
+            this.props = new Configuration().asProperties();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to load confiuration", e);
 		}
@@ -156,7 +153,7 @@ public class Preferences extends AbstractPreferences {
 
     public Map<String,String> asUnmodifiableMap() {
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        Map<String, String> map = new HashMap(props);
+        Map<String, String> map = new HashMap(this.props);
         return Collections.<String,String>unmodifiableMap(map);
     }
 
