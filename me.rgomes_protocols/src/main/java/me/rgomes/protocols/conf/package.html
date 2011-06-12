@@ -11,8 +11,8 @@ directory, which may be environment dependent.
 <ul>
     <li>
 When still in development, the application should pick up configuration files from the classpath, provided by the IDE, possibly.
-In the specific case of Eclipse, it creates folders "target/classes" and "target/test-classes" which are neither the locatons where
-the developer choose for configuration files nor the locations where these files will sit when the applicaton is deployed onto
+In the specific case of Eclipse, it creates folders "target/classes" and "target/test-classes" which are neither the locations where
+the developer choose for configuration files nor the locations where these files will sit when the application is deployed onto
 production. We would like a sort of "Eclipse mode" in our application, which makes it find configuration files where Eclipse put
 them.
     </li>
@@ -28,35 +28,61 @@ developer" should be considered as present in the file system, and not in the .j
 </ul>
 <p/>
 This typical scenario requires the ability to look for a resource in a list of locations.
-An easy way to do it is simply define a relative location, say "./config", which is a relative directory, which can be found
+An easy way to do it is simply define a relative location, say "./conf", which is a relative directory, which can be found
 in the file system, in the .jar file itself, or relative to folders Eclipse creates, depending on the way the application is
-running.
-<p/>
-The critical factor here is that the developer would like the ability to specify the configuration file only once and let more
-precise definition for a later opportunity, according to the environment and even production support decision.
-This can be actually be done easily by the code below, which employs the classes defined by this package.
+running. More than that, we would like the ability to specify that a certain configuration is relative to a certain customer and
+to a certain environment in particular. Actually, we could have several configurations, like this:
 <pre>
-    InputStream is = new ResourceLookup("config/application.properties").openInputStream();
+    /conf
+        /MyFirstCustomer
+            /dev
+                application.properties
+            /qa
+                application.properties
+            /prod
+                application.properties
+        /BigCustomer
+            /dev
+                application.properties
+            /test
+                application.properties
+            /qa
+                application.properties
+            /stage
+                application.properties
+            /prod
+                application.properties
+        /demo
+            /debug
+                application.properties
+            /stage
+                application.properties
+
 </pre>
 <p/>
-Now let's suppose we generate different distributions of our application, say, one different distribution for each client.
-One easy way to configure the application would be to insert an entry in the MANIFEST.MF file, which helps determine the exact
-location of the configuration files.
-<p/>
-One difficulty of this approach is that the location of MANIFEST.MF changes, depending if you are debugging your application under
-Eclipse, running from the command line, given a .jar file for your application or running from the command line when the .jar file
-is exploded.
-<p/>
-A solution would be employ <i>ResourceLookup</i> again like this:
+The critical factor here is that the developer would like the ability to specify the configuration file in the source code only once
+and let the environment itself tell which configuration file must be taken.
+This can be actually be done easily by the code below:
 <pre>
-    final Manifest manifest;
-    try {
-        manifest = new Manifest(new ResourceLookup("META-INF/MANIFEST.MF").openInputStream());
-    } catch (final IOException e) {
-        throw new RuntimeException("No META-INF/MANIFEST.MF found");
-    }
-    String clientName = manifest.getMainAttributes().getAttribute("client", "debug"); // returns "debug", if entry is not found
-    InputStream is = new ResourceLookup("config/" + clientName + "/application.properties").openInputStream();
+    URLStreamHandler handler = new me.rgomes.protocols.conf.Handler();
+    InputStream is = new URL(null, "conf:application.properties", handler).openStream();
+</pre>
+<p/>
+But... how the environment "itself" finds the correct configuration file?
+<p/>
+There are two ways of doing it:
+<ul>
+    <li>
+        entries <i>realm</i> and <mode> are taken from the MANIFEST.MF file;
+    </li>
+    <li>
+        entries <i>realm</i> and <mode> are taken global.properties file;
+    </li>
+</ul>
+This is an example of what you can specify in conf/globals.properties:
+<pre>
+realm=BigCustomer
+mode=stage
 </pre>
     </body>
 </html>
