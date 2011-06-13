@@ -1,0 +1,47 @@
+package example.workflow
+
+
+pageflow MainFlow {
+
+    actions
+      back      "Back"
+      previous  "< Previous"
+      next      "Next >"
+      forums    "Forums"
+      tutorial  "Tutorial"
+    end
+     
+    state DisclaimerView
+      forums     => ForumsView
+      tutorial   => TutorialView
+      next       => FirstView
+    end
+     
+    state FirstView
+      forums     => ForumsView
+      tutorial   => TutorialView
+      previous   => DisclaimerView
+      next       => SecondView
+    end
+     
+    state SecondView
+      forums     => ForumsView
+      tutorial   => TutorialView
+      previous   => FirstView
+      next       => ThirdView
+    end
+     
+    state ThirdView
+      forums     => ForumsView
+      tutorial   => TutorialView
+      previous   => SecondView
+    end
+     
+    state ForumsView
+      back      => BACK
+    end
+    
+    state TutorialView
+      back      => BACK
+    end
+}
