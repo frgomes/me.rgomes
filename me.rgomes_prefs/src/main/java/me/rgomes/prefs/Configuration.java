@@ -2,10 +2,10 @@ package me.rgomes.prefs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLStreamHandler;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +77,25 @@ public class Configuration {
         final InputStream is = new URL(null, conf, handler).openStream();
         if (is != null) props.load(is);
         return props;
+    }
+
+    public void dump() throws IOException {
+        dump(java.lang.System.out, asUnmodifiableMap());
+    }
+
+    public void dump(Map<String,String> map) {
+        dump(java.lang.System.out, map);
+    }
+
+    public void dump(final PrintStream ps, Map<String,String> map) {
+        try {
+            for (final String key : map.keySet()) {
+                String value = map.get(key);
+                ps.println(String.format("%s=%s", key, value));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot dump preferences", e);
+        }
     }
 
 }
