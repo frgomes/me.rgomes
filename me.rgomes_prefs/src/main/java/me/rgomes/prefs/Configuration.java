@@ -83,11 +83,11 @@ public class Configuration {
         dump(java.lang.System.out, asUnmodifiableMap());
     }
 
-    public void dump(Map<String,String> map) {
-        dump(java.lang.System.out, map);
+    public void dump(final PrintStream ps) {
+        dump(ps, asUnmodifiableMap());
     }
 
-    public void dump(final PrintStream ps, Map<String,String> map) {
+    private void dump(final PrintStream ps, Map<String,String> map) {
         try {
             for (final String key : map.keySet()) {
                 String value = map.get(key);
