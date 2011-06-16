@@ -16,7 +16,7 @@
     <url>http://sourceforge.net/projects/rgomes/files/maven/sites/${project.artifactId}</url>
 
     <prerequisites>
-        <maven>3.0.3</maven>
+        <maven>>=2.2.1</maven>
     </prerequisites>
 
     <properties>
@@ -31,21 +31,24 @@
         <junit.version>4.8.2</junit.version>
         <slf4j.version>1.5.11</slf4j.version>
 
-        <props.maven.maven-surefire-plugin.version>2.7.1</props.maven.maven-surefire-plugin.version>
-        <props.maven.maven-eclipse-plugin.version>2.8</props.maven.maven-eclipse-plugin.version>
-        <props.maven.maven-compiler-plugin.version>2.3.2</props.maven.maven-compiler-plugin.version>
-        <props.maven.maven-assembly-plugin.version>2.2-beta-2</props.maven.maven-assembly-plugin.version>
-        <props.maven.maven-antrun-plugin.version>1.6</props.maven.maven-antrun-plugin.version>
-        <props.maven.maven-clean-plugin.version>2.4.1</props.maven.maven-clean-plugin.version>
-        <props.maven.maven-source-plugin.version>2.1.2</props.maven.maven-source-plugin.version>
-        <props.maven.maven-javadoc-plugin.version>2.8</props.maven.maven-javadoc-plugin.version>
-        <props.maven.maven-deploy-plugin.version>2.5</props.maven.maven-deploy-plugin.version>
-        <props.maven.maven-install-plugin.version>2.3.1</props.maven.maven-install-plugin.version>
-        <props.maven.maven-resources-plugin.version>2.4.3</props.maven.maven-resources-plugin.version>
-        <props.maven.maven-site-plugin.version>3.0-beta-3</props.maven.maven-site-plugin.version>
-        <props.maven.maven-war-plugin.version>2.1.1</props.maven.maven-war-plugin.version>
-
-        <props.maven.wagon.wagon-ssh.version>1.0-beta-7</props.maven.wagon.wagon-ssh.version>
+	<!-- These are versions valid for Maven 2.2.1 -->
+        <!-- See profile maven3 for valid versions with Maven 3.0.x -->
+	<props.maven.maven-enforcer-plugin.version>1.0</props.maven.maven-enforcer-plugin.version>
+	<props.maven.maven-eclipse-plugin.version>2.8</props.maven.maven-eclipse-plugin.version>
+	<props.maven.maven-compiler-plugin.version>2.3.2</props.maven.maven-compiler-plugin.version>
+	<props.maven.maven-jar-plugin.version>2.3.1</props.maven.maven-jar-plugin.version>
+	<props.maven.maven-assembly-plugin.version>2.2-beta-2</props.maven.maven-assembly-plugin.version>
+	<props.maven.maven-antrun-plugin.version>1.3</props.maven.maven-antrun-plugin.version>
+	<props.maven.maven-clean-plugin.version>2.2</props.maven.maven-clean-plugin.version>
+	<props.maven.maven-source-plugin.version>2.1.2</props.maven.maven-source-plugin.version>
+	<props.maven.maven-javadoc-plugin.version>2.8</props.maven.maven-javadoc-plugin.version>
+	<props.maven.maven-deploy-plugin.version>2.4</props.maven.maven-deploy-plugin.version>
+	<props.maven.maven-install-plugin.version>2.2</props.maven.maven-install-plugin.version>
+	<props.maven.maven-resources-plugin.version>2.3</props.maven.maven-resources-plugin.version>
+	<props.maven.maven-site-plugin.version>2.0-beta-7</props.maven.maven-site-plugin.version>
+	<props.maven.maven-surefire-plugin.version>2.4.3</props.maven.maven-surefire-plugin.version>
+	<props.maven.maven-war-plugin.version>2.1-alpha-2</props.maven.maven-war-plugin.version>
+	<props.maven.wagon.wagon-ssh.version>1.0-beta-7</props.maven.wagon.wagon-ssh.version>
     </properties>
 
     <organization>
@@ -234,5 +237,35 @@
         </pluginManagement>
 
     </build>
+
+    <profiles>
+        <profile>
+	    <id>maven3</id>
+	    <activation>
+                <file>
+		    <!-- Only recognized by Maven 3.x (see MNG-2363) -->
+		    <exists>${basedir}</exists>
+		</file>
+            </activation>
+	    <properties>
+                <props.maven.maven-enforcer-plugin.version>1.0</props.maven.maven-enforcer-plugin.version>
+	        <props.maven.maven-eclipse-plugin.version>2.8</props.maven.maven-eclipse-plugin.version>
+	        <props.maven.maven-compiler-plugin.version>2.3.2</props.maven.maven-compiler-plugin.version>
+                <props.maven.maven-jar-plugin.version>2.3.1</props.maven.maven-jar-plugin.version> 
+	        <props.maven.maven-assembly-plugin.version>2.2-beta-2</props.maven.maven-assembly-plugin.version>
+	        <props.maven.maven-antrun-plugin.version>1.6</props.maven.maven-antrun-plugin.version>
+	        <props.maven.maven-clean-plugin.version>2.4.1</props.maven.maven-clean-plugin.version>
+	        <props.maven.maven-source-plugin.version>2.1.2</props.maven.maven-source-plugin.version>
+	        <props.maven.maven-javadoc-plugin.version>2.8</props.maven.maven-javadoc-plugin.version>
+	        <props.maven.maven-deploy-plugin.version>2.5</props.maven.maven-deploy-plugin.version>
+	        <props.maven.maven-install-plugin.version>2.3.1</props.maven.maven-install-plugin.version>
+	        <props.maven.maven-resources-plugin.version>2.4.3</props.maven.maven-resources-plugin.version>
+	        <props.maven.maven-site-plugin.version>3.0-beta-3</props.maven.maven-site-plugin.version>
+	        <props.maven.maven-surefire-plugin.version>2.7.1</props.maven.maven-surefire-plugin.version>
+	        <props.maven.maven-war-plugin.version>2.1.1</props.maven.maven-war-plugin.version>
+	        <props.maven.wagon.wagon-ssh.version>1.0-beta-7</props.maven.wagon.wagon-ssh.version>
+	    </properties>
+	</profile>
+    </profiles>
 
 </project>
