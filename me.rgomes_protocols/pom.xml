@@ -28,7 +28,7 @@
         <props.compile.maxmem>512m</props.compile.maxmem>
         <props.compile.fork>false</props.compile.fork> <!-- Be cautious: may fork a different JVM -->
 
-        <junit.version>4.8.2</junit.version>
+        <junit.version>4.13.1</junit.version>
         <slf4j.version>1.5.11</slf4j.version>
 
 	<!-- These are versions valid for Maven 2.2.1 -->
