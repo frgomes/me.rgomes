@@ -37,7 +37,7 @@
         <maven-jetty-plugin.version>6.1.24</maven-jetty-plugin.version> <!-- 6.1.19 -->
 
         <xstream.version>1.4.10-java7</xstream.version>
-        <jettison.version>1.2</jettison.version>
+        <jettison.version>1.5.2</jettison.version>
 
         <java-util.version>0.1.0-SNAPSHOT</java-util.version>
     </properties>
